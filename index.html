@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miniservice Ranchito's - Principal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#5251ab', // Morado Profundo
+                        'secondary': '#8c8ce4', // Morado Claro
+                        'surface': '#28354A', // Dark Slate Blue
+                        'bg-dark': '#1F2C47', // Gray 900
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-bg text-white min-h-screen">
+
+    <div id="app" class="flex h-screen">
+
+        <aside id="sidebar"
+            class="sidebar w-64 bg-surface flex-shrink-0 border-r border-gray-700 overflow-y-auto hidden md:block">
+            <div class="p-6">
+                <h1 class="text-xl font-bold text-primary mb-8 tracking-wider">
+                    <span class="text-white text-shadow">Miniservice</span> Ranchito's
+                </h1>
+
+                <nav class="space-y-2">
+                    <a href="#" data-view="principal"
+                        class="nav-link flex items-center p-3 rounded-lg border-l-4 border-transparent active text-shadow">
+                        <span class="text-xl mr-3">🏠</span>
+                        Principal
+                    </a>
+
+                    <a href="#" data-view="ventas"
+                        class="nav-link flex items-center p-3 rounded-lg border-l-4 border-transparent text-shadow">
+                        <span class="text-xl mr-3">💵</span>
+                        Registro de Venta
+                    </a>
+
+                    <a href="#" data-view="stock"
+                        class="nav-link flex items-center p-3 rounded-lg border-l-4 border-transparent text-shadow">
+                        <span class="text-xl mr-3">📦</span>
+                        Gestión de Stock
+                    </a>
+
+                    <a href="#" data-view="caja"
+                        class="nav-link flex items-center p-3 rounded-lg border-l-4 border-transparent text-shadow">
+                        <span class="text-xl mr-3">🖨️</span>
+                        Caja (Cierre Diario)
+                    </a>
+                </nav>
+
+                <div class="mt-8 pt-4 border-t border-gray-700">
+                    <p class="text-xs font-semibold uppercase text-gray-400 mb-2">Administración</p>
+
+                    <a href="#" data-view="usuarios"
+                        class="nav-link flex items-center p-3 rounded-lg border-l-4 border-transparent opacity-75 hover:opacity-100 text-shadow">
+                        <span class="text-xl mr-3">🔑</span>
+                        Usuarios
+                        <span class="ml-auto text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">Admin</span>
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 text-xs text-gray-500 border-t border-gray-700">
+                Tu ID: <span id="user-id-display" class="font-mono text-gray-400">Cargando...</span>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header
+                class="header-gradient p-4 border-b border-gray-700 shadow-md flex items-center justify-between sticky top-0 z-10">
+                <div
+                    class="absolute inset-x-0 text-center pointer-events-none md:pointer-events-auto md:w-full md:relative md:flex md:justify-center">
+                    <h2
+                        class="text-xl font-extrabold text-white hidden md:block md:w-auto md:relative tracking-wider text-shadow">
+                        Miniservice Ranchito's
+                    </h2>
+                </div>
+
+                <div class="flex items-center">
+                    <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-white hover:bg-gray-700 mr-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                    <h2 id="main-title" class="text-xl font-semibold text-white md:hidden text-shadow">Principal</h2>
+                </div>
+
+                <div class="flex items-center space-x-4 ml-auto md:ml-0">
+                    <span class="text-sm text-gray-300 hidden sm:inline">¡Hola, Administrador!</span>
+                    <button
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-sm hover:ring-2 ring-primary ring-offset-2 ring-offset-bg-dark">
+                        AD
+                    </button>
+                </div>
+            </header>
+            <div id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8">
+
+                <section id="view-principal" class="content-view welcome-title space-y-8">
+                    <h3 class="text-4xl font-extrabold text-white mt-10 text-shadow">Bienvenido al Panel de Gestión</h3>
+                    <p class="text-xl text-gray-300">
+                        ¿Qué desea gestionar hoy? Use el menú lateral para navegar por las distintas áreas del sistema.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
+                        <div
+                            class="bg-surface p-5 rounded-xl shadow-lg border border-gray-700 hover:ring-2 hover:ring-primary transition duration-300">
+                            <p class="text-sm text-gray-400">Ventas del Día</p>
+                            <p class="text-3xl font-bold text-secondary mt-1 text-shadow">$450.50</p>
+                            <p class="text-xs text-gray-500 mt-2">Última actualización: 14:30</p>
+                        </div>
+
+                        <div
+                            class="bg-surface p-5 rounded-xl shadow-lg border border-gray-700 hover:ring-2 hover:ring-primary transition duration-300">
+                            <p class="text-sm text-gray-400">Bajo Stock</p>
+                            <p class="text-3xl font-bold text-secondary mt-1 text-shadow">12 Ítems</p>
+                            <p class="text-xs text-gray-500 mt-2">Revisar lista de productos</p>
+                        </div>
+
+                        <div
+                            class="bg-surface p-5 rounded-xl shadow-lg border border-gray-700 hover:ring-2 hover:ring-primary transition duration-300">
+                            <p class="text-sm text-gray-400">Caja Actual</p>
+                            <p class="text-3xl font-bold text-secondary mt-1 text-shadow">$150.00</p>
+                            <p class="text-xs text-gray-500 mt-2">Balance inicial</p>
+                        </div>
+
+                        <div
+                            class="bg-surface p-5 rounded-xl shadow-lg border border-gray-700 hover:ring-2 hover:ring-primary transition duration-300">
+                            <p class="text-sm text-gray-400">Roles</p>
+                            <p class="text-3xl font-bold text-primary mt-1 text-shadow">3</p>
+                            <p class="text-xs text-gray-500 mt-2">Administrador, Empleado, Invitado</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <button onclick="navigate('ventas')"
+                            class="bg-primary hover:bg-secondary text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 text-shadow">
+                            Registrar Venta Rápida
+                        </button>
+                        <button onclick="navigate('stock')"
+                            class="bg-secondary hover:bg-primary text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 text-shadow">
+                            Revisar Inventario
+                        </button>
+                    </div>
+                </section>
+
+                <section id="view-ventas" class="content-view hidden">
+
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
+
+                        <div class="lg:col-span-3">
+                            <div
+                                class="bg-surface rounded-xl shadow-2xl border border-gray-700 h-full flex flex-col min-h-[600px]">
+                                <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+                                    <h3 class="text-xl font-bold text-white text-shadow">Venta Actual</h3>
+                                    <button onclick="clearSale()" title="Limpiar Venta"
+                                        class="text-gray-400 hover:text-red-400 p-2 rounded-lg hover:bg-bg-dark transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M3 6h18" />
+                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div
+                                    class="px-4 py-2 flex text-xs font-medium text-gray-400 uppercase tracking-wider border-b border-gray-700 sticky top-0 bg-surface">
+                                    <div class="flex-1">Producto</div>
+                                    <div class="w-20 text-center">Cant.</div>
+                                    <div class="w-24 text-right">Precio</div>
+                                    <div class="w-24 text-right">Subtotal</div>
+                                    <div class="w-12 text-right"></div>
+                                </div>
+
+                                <div id="venta-lista-items" class="flex-1 overflow-y-auto p-4 space-y-3">
+                                    <p class="text-center text-gray-500 pt-10">Escanee un producto para comenzar...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2">
+                            <div
+                                class="bg-surface rounded-xl shadow-2xl border border-gray-700 p-6 space-y-6 sticky top-20">
+
+                                <form id="scanner-form">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="scanner-input"
+                                                class="block text-sm font-medium text-gray-300">Escanear Producto (Usar
+                                                ID o Nombre)</label>
+                                            <input type="text" id="scanner-input" required
+                                                class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary text-lg"
+                                                placeholder="ID o Nombre del Producto">
+                                        </div>
+                                        <div class="grid grid-cols-3 gap-4">
+                                            <div class="col-span-1">
+                                                <label for="scanner-qty"
+                                                    class="block text-sm font-medium text-gray-300">Cantidad</label>
+                                                <input type="number" id="scanner-qty" value="1" min="1" required
+                                                    class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary text-lg">
+                                            </div>
+                                            <button type="submit"
+                                                class="col-span-2 bg-primary hover:bg-secondary text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 text-shadow text-lg self-end">
+                                                Cargar Producto
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <hr class="border-gray-700">
+
+                                <div>
+                                    <div class="bg-bg-dark p-6 rounded-lg text-center border border-gray-700">
+                                        <p class="text-lg font-semibold text-gray-400 uppercase tracking-widest">Total a
+                                            Pagar</p>
+                                        <p id="venta-total-display"
+                                            class="text-6xl font-extrabold text-secondary text-shadow my-2">$0.00</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <button id="cancel-sale-btn"
+                                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-lg shadow-lg transition duration-300 text-shadow">
+                                        Cancelar Venta
+                                    </button>
+                                    <button id="finalize-sale-btn"
+                                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg shadow-lg transition duration-300 text-shadow">
+                                        Finalizar Venta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="view-stock" class="content-view hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-3xl font-bold text-white text-shadow">Inventario de Productos</h3>
+                        <button onclick="openAddModal()"
+                            class="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center">
+                            <span class="text-xl mr-2">+</span> Agregar Producto
+                        </button>
+                    </div>
+                    <p class="text-gray-300 mt-2">Listado en tiempo real de productos, stock y precios. Los productos
+                        con bajo stock (≤ 5 uds) se resaltan.</p>
+
+                    <div class="bg-surface rounded-xl shadow-2xl overflow-x-auto border border-gray-700">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-surface/70">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Nombre</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Categoría</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Precio Unitario</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Stock</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Proveedor</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                                        Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock-table-body" class="divide-y divide-gray-800">
+                                <tr>
+                                    <td colspan="6" class="p-4 text-center text-gray-400">Cargando inventario...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="view-caja" class="content-view hidden">
+                    <h3 class="text-3xl font-bold text-white text-shadow">Caja y Cierre Diario</h3>
+                    <p class="text-gray-300 mt-2">Esta sección será para gestionar el dinero en efectivo, realizar
+                        arqueos y generar reportes de cierre de caja.</p>
+                </section>
+
+                <section id="view-usuarios" class="content-view hidden">
+                    <h3 class="text-3xl font-bold text-red-400 text-shadow">Gestión de Usuarios (Área de Administración)
+                    </h3>
+                    <p class="text-gray-300 mt-2">Solo usuarios con rol de "Admin" podrán acceder para registrar, editar
+                        o eliminar cuentas de empleados.</p>
+                </section>
+
+            </div>
+        </main>
+
+        <div id="product-modal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4"
+            onclick="if(event.target.id === 'product-modal') closeModal('product-modal')">
+            <div class="bg-surface p-8 rounded-xl shadow-2xl w-full max-w-lg border border-primary">
+                <h3 id="modal-title" class="text-2xl font-bold text-white mb-6 text-shadow">Agregar Nuevo Producto</h3>
+                <form id="product-form" data-id="">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="product-name" class="block text-sm font-medium text-gray-300">Nombre del
+                                Producto</label>
+                            <input type="text" id="product-name" required
+                                class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="product-price" class="block text-sm font-medium text-gray-300">Precio
+                                    Unitario ($)</label>
+                                <input type="number" step="0.01" id="product-price" required
+                                    class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary">
+                            </div>
+                            <div>
+                                <label for="product-stock" class="block text-sm font-medium text-gray-300">Stock
+                                    (Unidades)</label>
+                                <input type="number" id="product-stock" required
+                                    class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="product-category"
+                                class="block text-sm font-medium text-gray-300">Categoría</label>
+                            <input type="text" id="product-category"
+                                class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary"
+                                placeholder="Ej: Bebidas, Snacks">
+                        </div>
+                        <div>
+                            <label for="product-supplier"
+                                class="block text-sm font-medium text-gray-300">Proveedor</label>
+                            <input type="text" id="product-supplier"
+                                class="mt-1 block w-full bg-bg-dark border border-gray-600 rounded-lg p-3 text-white focus:ring-primary focus:border-primary"
+                                placeholder="Ej: Coca Cola, Frito Lay">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-4 mt-8">
+                        <button type="button" onclick="closeModal('product-modal')"
+                            class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                            Cancelar
+                        </button>
+                        <button type="submit"
+                            class="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                            Guardar Producto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="delete-confirm-modal"
+            class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4"
+            onclick="if(event.target.id === 'delete-confirm-modal') closeModal('delete-confirm-modal')">
+            <div class="bg-surface p-8 rounded-xl shadow-2xl w-full max-w-sm border border-red-500">
+                <h3 class="text-2xl font-bold text-red-400 mb-4">Confirmar Eliminación</h3>
+                <p class="text-gray-300">¿Está seguro que desea eliminar el producto "<span id="delete-product-name"
+                        class="font-semibold text-white"></span>"? Esta acción no se puede deshacer.</p>
+
+                <div class="flex justify-end space-x-4 mt-8">
+                    <button type="button" onclick="closeModal('delete-confirm-modal')"
+                        class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                        Cancelar
+                    </button>
+                    <button id="confirm-delete-button"
+                        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="message-box"
+            class="fixed bottom-4 right-4 p-4 rounded-lg shadow-xl z-50 transition-transform transform translate-x-full duration-500 text-shadow">
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+
+</body>
+
+</html>
