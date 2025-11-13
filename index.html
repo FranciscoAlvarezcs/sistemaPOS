@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miniservice Ranchito's - Gestión Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        
+        .bg-custom-purple {
+            background-color: #6D63B8; 
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.05) 0,
+                rgba(255, 255, 255, 0.05) 1px,
+                transparent 1px,
+                transparent 15px 
+            );
+            background-size: 30px 30px; 
+        }
+
+        
+        .login-box-container {
+            width: 80%; 
+            max-width: 450px; 
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex w-full min-h-screen">
+
+        <div class="hidden lg:block lg:w-1/2">
+            <img 
+                src="image/foto.jpeg" 
+                alt="Fachada de Miniservice Ranchito's" 
+                class="w-full h-full object-cover"
+            >
+        </div>
+
+        <div class="w-full lg:w-1/2 bg-custom-purple flex items-center justify-center p-8">
+            
+            <div class="bg-white login-box-container p-12 lg:p-16 h-4/5 flex flex-col justify-center rounded-lg shadow-xl">
+                
+                <div class="text-center mb-8">
+                    <p class="text-sm font-semibold text-gray-700 flex items-center justify-center gap-1">
+                        <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Miniservice Ranchito's
+                    </p>
+                    
+                    <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-gray-800 inline-block pb-1 mt-1">
+                        Gestionamiento web
+                    </h2>
+                </div>
+
+                <p class="text-center text-gray-600 mb-8 text-lg">
+                    Por favor, inicie sesión para ingresar
+                </p>
+
+                <form action="#" method="POST">
+                    <div class="space-y-6">
+                        <div>
+                            <input 
+                                type="text" 
+                                id="usuario" 
+                                name="usuario" 
+                                placeholder="Usuario" 
+                                class="w-full px-5 py-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
+                            >
+                        </div>
+                        
+                        <div>
+                            <input 
+                                type="password" 
+                                id="contraseña" 
+                                name="contraseña" 
+                                placeholder="Contraseña" 
+                                class="w-full px-5 py-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 text-lg"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <button 
+                            type="submit" 
+                            class="w-full text-white font-semibold py-3 rounded-lg transition duration-300 ease-in-out shadow-md text-lg"
+                            style="background-color: #6D63B8;"
+                        >
+                            Iniciar sesión
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
