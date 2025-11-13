@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { getConnection, sql } = require('../config/database');
-const { verifyToken } = require('../middleware/auth.middleware');
+const { verifyToken, isAdmin } = require('../middleware/auth.middleware');
 
-// Productos más vendidos
-router.get('/productos-vendidos', verifyToken, async (req, res) => {
+// 🔒 SOLO ADMIN - Productos más vendidos
+router.get('/productos-vendidos', verifyToken, isAdmin, async (req, res) => {
   try {
     const { limite = 10, fechaInicio, fechaFin } = req.query;
     const pool = await getConnection();
@@ -42,8 +42,8 @@ router.get('/productos-vendidos', verifyToken, async (req, res) => {
   }
 });
 
-// Ventas por método de pago
-router.get('/metodos-pago', verifyToken, async (req, res) => {
+// 🔒 SOLO ADMIN - Ventas por método de pago
+router.get('/metodos-pago', verifyToken, isAdmin, async (req, res) => {
   try {
     const { fechaInicio, fechaFin } = req.query;
     const pool = await getConnection();
@@ -71,8 +71,8 @@ router.get('/metodos-pago', verifyToken, async (req, res) => {
   }
 });
 
-// Ventas por usuario/cajero
-router.get('/ventas-usuario', verifyToken, async (req, res) => {
+// 🔒 SOLO ADMIN - Ventas por usuario/cajero
+router.get('/ventas-usuario', verifyToken, isAdmin, async (req, res) => {
   try {
     const { fechaInicio, fechaFin } = req.query;
     const pool = await getConnection();
@@ -106,12 +106,11 @@ router.get('/ventas-usuario', verifyToken, async (req, res) => {
   }
 });
 
-// Dashboard - Resumen general
-router.get('/dashboard', verifyToken, async (req, res) => {
+// 🔒 SOLO ADMIN - Dashboard
+router.get('/estado', verifyToken, isAdmin, async (req, res) => {
   try {
     const pool = await getConnection();
 
-    // Ventas de hoy
     const ventasHoy = await pool.request().query(`
       SELECT 
         COUNT(*) AS CantidadVentas,
@@ -120,7 +119,6 @@ router.get('/dashboard', verifyToken, async (req, res) => {
       WHERE CAST(FechaHora AS DATE) = CAST(GETDATE() AS DATE) AND Estado = 'COMPLETADA'
     `);
 
-    // Ventas del mes
     const ventasMes = await pool.request().query(`
       SELECT 
         COUNT(*) AS CantidadVentas,
@@ -131,24 +129,20 @@ router.get('/dashboard', verifyToken, async (req, res) => {
         AND Estado = 'COMPLETADA'
     `);
 
-    // Productos con stock bajo
     const stockBajo = await pool.request().query(`
       SELECT COUNT(*) AS CantidadProductos
       FROM vw_ProductosStockBajo
     `);
 
-    // Total productos
     const totalProductos = await pool.request().query(`
       SELECT COUNT(*) AS Total FROM Productos WHERE Activo = 1
     `);
 
-    // Valor del inventario
     const valorInventario = await pool.request().query(`
       SELECT ISNULL(SUM(Stock * PrecioVenta), 0) AS ValorTotal
       FROM Productos WHERE Activo = 1
     `);
 
-    // Cajas abiertas
     const cajasAbiertas = await pool.request().query(`
       SELECT COUNT(*) AS CantidadCajas
       FROM AperturaCierreCaja WHERE Estado = 'ABIERTA'
@@ -180,8 +174,8 @@ router.get('/dashboard', verifyToken, async (req, res) => {
   }
 });
 
-// Reporte de ventas por período
-router.get('/ventas-periodo', verifyToken, async (req, res) => {
+// 🔒 SOLO ADMIN - Reporte de ventas por período
+router.get('/ventas-periodo', verifyToken, isAdmin, async (req, res) => {
   try {
     const { fechaInicio, fechaFin } = req.query;
 
@@ -210,7 +204,6 @@ router.get('/ventas-periodo', verifyToken, async (req, res) => {
         ORDER BY Fecha DESC
       `);
 
-    // Calcular totales generales
     const totales = result.recordset.reduce((acc, dia) => {
       acc.cantidadVentas += dia.CantidadVentas;
       acc.subtotal += dia.Subtotal;
@@ -229,8 +222,8 @@ router.get('/ventas-periodo', verifyToken, async (req, res) => {
   }
 });
 
-// Historial de cierres de caja
-router.get('/cierres-caja', verifyToken, async (req, res) => {
+// 🔒 SOLO ADMIN - Historial de cierres de caja
+router.get('/cierres-caja', verifyToken, isAdmin, async (req, res) => {
   try {
     const { limite = 20, usuarioID } = req.query;
     const pool = await getConnection();
@@ -269,6 +262,43 @@ router.get('/cierres-caja', verifyToken, async (req, res) => {
     res.json({ success: true, cierres: result.recordset });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error al obtener cierres', error: error.message });
+  }
+});
+
+// 🆕 NUEVO - Calendario de ventas (resumen por día del mes)
+router.get('/calendario-ventas', verifyToken, isAdmin, async (req, res) => {
+  try {
+    const { mes, anio } = req.query;
+    
+    const mesActual = mes || new Date().getMonth() + 1;
+    const anioActual = anio || new Date().getFullYear();
+
+    const pool = await getConnection();
+    const result = await pool.request()
+      .input('mes', sql.Int, mesActual)
+      .input('anio', sql.Int, anioActual)
+      .query(`
+        SELECT 
+          DAY(FechaHora) AS Dia,
+          CAST(FechaHora AS DATE) AS Fecha,
+          COUNT(*) AS CantidadVentas,
+          SUM(Total) AS TotalVentas
+        FROM Ventas
+        WHERE MONTH(FechaHora) = @mes 
+          AND YEAR(FechaHora) = @anio
+          AND Estado = 'COMPLETADA'
+        GROUP BY CAST(FechaHora AS DATE), DAY(FechaHora)
+        ORDER BY Dia
+      `);
+
+    res.json({ 
+      success: true, 
+      mes: mesActual,
+      anio: anioActual,
+      ventas: result.recordset 
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error al obtener calendario', error: error.message });
   }
 });
 
