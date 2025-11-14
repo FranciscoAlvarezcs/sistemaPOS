@@ -1,0 +1,58 @@
+/* Estilos base para una experiencia moderna en modo oscuro */
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Sombra de Texto para mejor contraste */
+.text-shadow {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Fondo de pantalla elegante (combinación de primary/secondary) */
+.dashboard-bg {
+    background: linear-gradient(180deg, #8c8ce4, #5251ab);
+}
+
+/* Gradiente para el Header superior */
+.header-gradient {
+    background: linear-gradient(180deg, #5d5fa8, #6769c8);
+}
+
+/* Estilo base de los enlaces de navegación */
+.nav-link {
+    transition: all 0.2s;
+    color: #ffffff;
+}
+/* Estilo de hover y activo para los enlaces de navegación */
+.nav-link.active, .nav-link:hover {
+    background-color: #374151; /* Gray 700 */
+    border-left-color: #5251ab; /* Primary color */
+    color: #ffffff;
+}
+.nav-link.active {
+    font-weight: 600;
+}
+
+/* Animación para el contenido de bienvenida */
+.welcome-title {
+    animation: fadeIn 1s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ocultar el scrollbar en la barra lateral */
+.sidebar {
+    scrollbar-width: none; /* Firefox */
+}
+.sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+/* Estilo para el overlay del modal */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+}
